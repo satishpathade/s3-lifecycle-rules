@@ -34,7 +34,7 @@ The rules included in this configuration are optimized for cost efficiency and d
 
 ## File Structure
 
-- `lifecycle.json` — Contains the complete lifecycle configuration in JSON format.
+- [lifecycle.json](lifecycle.json) — Contains the complete lifecycle configuration in JSON format.
 
 ---
 
