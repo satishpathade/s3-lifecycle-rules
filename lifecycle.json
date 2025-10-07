@@ -1,0 +1,68 @@
+{
+  "Rules": [
+    {
+      "ID": "tier-then-expire",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": ""
+      },
+      "Transitions": [
+        { "Days": 30, "StorageClass": "STANDARD_IA" },
+        { "Days": 90, "StorageClass": "GLACIER" },
+        { "Days": 365, "StorageClass": "DEEP_ARCHIVE" }
+      ],
+      "Expiration": {
+        "Days": 730
+      },
+      "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": 7
+      }
+    },
+    {
+      "ID": "logs-to-deep-archive",
+      "Status": "Enabled",
+      "Filter": {
+        "And": {
+          "Tags": [
+            { "Key": "class", "Value": "logs" }
+          ],
+          "ObjectSizeGreaterThan": 131072
+        }
+      },
+      "Transitions": [
+        { "Days": 180, "StorageClass": "DEEP_ARCHIVE" }
+      ],
+      "Expiration": {
+        "Days": 2555
+      }
+    },
+    {
+      "ID": "versioned-retention",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "docs/"
+      },
+      "NoncurrentVersionTransitions": [
+        { "NoncurrentDays": 30, "StorageClass": "STANDARD_IA" },
+        { "NoncurrentDays": 90, "StorageClass": "GLACIER" }
+      ],
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 365,
+        "NewerNoncurrentVersions": 10
+      },
+      "Expiration": {
+        "ExpiredObjectDeleteMarker": true
+      }
+    },
+    {
+      "ID": "immediate-int-tiering",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": ""
+      },
+      "Transitions": [
+        { "Days": 0, "StorageClass": "INTELLIGENT_TIERING" }
+      ]
+    }
+  ]
+}
